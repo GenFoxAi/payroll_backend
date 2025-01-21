@@ -30,7 +30,7 @@ vector_store = Milvus(
         "secure": True
     }
 )
-print("vector store created")
+
 if not vector_store.client.has_collection("payroll_collection"):
     raise ValueError("Collection 'payroll_collection' not found in Zilliz Cloud.")
 
@@ -74,7 +74,9 @@ def fetch_user_data(employee_id: str):
             user_data[key].pop("_id", None)
 
     return user_data
-
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to Payroll Backend"}
 @app.post("/chat/")
 async def chat(state: State, request: Request):
     try:
@@ -152,6 +154,7 @@ async def chat(state: State, request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
