@@ -97,7 +97,7 @@ async def chat(state: State, request: Request):
             new_messages = state.messages + [ai_message]
             return {"messages": new_messages, "conversation_state": state.conversation_state}
         
-        if "submit reimbursement" == user_query or "reimbursement request" == user_query or "apply for reimbursement" == user_query:
+        if "submit reimbursement" == user_query or "reimbursement request" == user_query or "apply for reimbursement" == user_query or "request expense reimbursement" == user_query:
             ai_message = {
                 "role": "assistant",
                 "content": f"To submit a reimbursement request, please click here to open the reimbursement submission."
@@ -131,12 +131,14 @@ async def chat(state: State, request: Request):
 
         Instructions:
         1. Interpret the user's query using the employee data and policies provided.
-        2. Perform any required calculations (e.g., overtime pay, leave balance).
-        3. Return a clear, concise response with the results of the calculations.
-        4. If the query is unrelated, politely state that it is out of scope.
-        5. Use proper HTML formatting (e.g., <b>, <i>, <u>, <br>) in your response to improve readability.
-        6. Keep all the calculations regarding currency in SAR (Saudi Riyal)
-        7. Dont return response without the HTML formatting.
+        2. Perform any required calculations (e.g., overtime pay, leave balance) and provide only key results.
+        3. Respond with concise, to-the-point answers that are easy to understand.
+        4. Use proper HTML formatting (e.g., <b>, <i>, <u>, <br>) in your response to improve readability.
+        5. Share only the most relevant details for the query, avoiding unnecessary information or overly detailed explanations.
+        7. If the employee asks for showing all the employee details , only show till the basic salary of the employee.
+        6. All currency-related calculations should be in SAR (Saudi Riyal).
+        7. If the query is unrelated, politely state that it is out of scope.
+        8. Do not return a response without HTML formatting.
 
         Answer:
         """
