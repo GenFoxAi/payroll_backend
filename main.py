@@ -39,7 +39,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5000", "http://0.0.0.0:5000","http://localhost:5173"],
+    allow_origins=["http://localhost:5000", "http://0.0.0.0:5000","http://localhost:5173","https://comm-it-engage-prototype.vercel.app/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
