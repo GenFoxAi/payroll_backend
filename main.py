@@ -89,7 +89,7 @@ async def chat(state: State, request: Request):
         user_query = state.messages[-1].content.strip().lower()
         employee_id = "E001" 
 
-        if "apply for leave" == user_query or "leave application" == user_query:
+        if "apply for leave" in user_query or "leave application" in user_query or "apply leave" in user_query:
             ai_message = {
                 "role": "assistant",
                 "content": f"To apply for leave, please click here to open the leave application. "
@@ -97,7 +97,7 @@ async def chat(state: State, request: Request):
             new_messages = state.messages + [ai_message]
             return {"messages": new_messages, "conversation_state": state.conversation_state}
         
-        if "submit reimbursement" == user_query or "reimbursement request" == user_query or "apply for reimbursement" == user_query or "request expense reimbursement" == user_query:
+        if "submit reimbursement" in user_query or "reimbursement request" in user_query or "apply for reimbursement" in user_query or "request expense reimbursement" in user_query:
             ai_message = {
                 "role": "assistant",
                 "content": f"To submit a reimbursement request, please click here to open the reimbursement submission."
