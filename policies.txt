@@ -49,7 +49,48 @@ monthly paid employees at least once a month.
 13th Salary : 13th-month payments are not mandatory. However, employers can pay
 performance-based bonuses at their discretion.
 
-WORKING HOURS
+COMPANY POLICIES:
+1. Employment and Hiring Policies
+Adherence to Saudization (Nitaqat): Aimed at increasing Saudi nationals' employment, companies must meet specific quotas for hiring Saudi citizens.
+Equal Opportunity Employment: Policies to prevent discrimination based on gender, nationality, or religion while respecting local customs and regulations.
+Contractual Obligations: Employment contracts must comply with Saudi Labor Law, specifying work hours, wages, and job responsibilities.
+2. Working Hours and Overtime
+Standard Workweek: Typically, 40-48 hours per week, with reduced hours during Ramadan for Muslim employees.
+Overtime Regulations: Overtime pay is generally set at 1.5 times the normal hourly wage as per labor laws.
+3. Code of Conduct
+Cultural Sensitivity: Dress code and behavior must respect Islamic principles, such as modest clothing and adherence to gender segregation where applicable.
+Workplace Harassment: Zero-tolerance policies against harassment, with strict disciplinary measures.
+Professional Behavior: Guidelines for maintaining decorum, punctuality, and mutual respect.
+4. Compensation and Benefits
+Salary Structure: Salaries must be paid monthly and in Saudi Riyals, per the Wage Protection System (WPS).
+End-of-Service Benefits (ESB): Employees are entitled to severance pay based on their length of service.
+Healthcare Coverage: Employers are required to provide health insurance to employees and their dependents.
+5. Health, Safety, and Environment (HSE) Policies
+Compliance with Regulations: Policies must adhere to Saudi Arabia's Occupational Safety and Health (OSH) standards.
+Emergency Procedures: Guidelines for fire drills, evacuations, and workplace safety.
+Personal Protective Equipment (PPE): Mandatory use in high-risk environments.
+6. Anti-Bribery and Corruption Policies
+Compliance with Local Laws: Strict prohibition of bribery and corruption, in line with Saudi and international anti-corruption laws.
+Whistleblowing Mechanisms: Confidential channels for reporting unethical practices.
+7. IT and Data Security
+Data Privacy: Policies must align with Saudi laws, including the Personal Data Protection Law (PDPL).
+Acceptable Use Policy: Guidelines for the use of company IT resources and internet access.
+Cybersecurity Measures: Protocols to prevent data breaches and unauthorized access.
+8. Termination and Resignation Policies
+Notice Periods: Typically 30 days for resignation or termination, unless stated otherwise in the contract.
+Severance Pay: In accordance with Saudi labor law for terminated employees.
+Exit Formalities: Return of company property and clearance of dues.
+9. Corporate Social Responsibility (CSR)
+Community Engagement: Policies encouraging participation in activities that benefit local communities.
+Sustainability Initiatives: Focus on reducing environmental impact, in line with Vision 2030 goals.
+10. Training and Development
+Skill Enhancement Programs: Encouragement for continuous learning and compliance training, including safety and cultural sensitivity.
+Leadership Development: Policies to nurture talent, especially among Saudi employees.
+11. Cultural and Religious Considerations
+Prayer Times: Provision of prayer rooms and adjustment of work schedules for prayer breaks.
+Religious Observance: Flexibility during Ramadan and other Islamic holidays.
+
+WORKING HOURS:
 General : The working week in Saudi Arabia is typically 48 hours, 8 hours per day, six days a
 week. The working day may decrease to 6 hours a day during the time of Ramadan.
 Typically, Fridays are a rest day.
@@ -58,7 +99,7 @@ and is regulated by employment contracts/collective agreements. Daily hours
 cannot exceed 11 hours.
 From the 8th hour the worker must be paid at a rate of 150% salary.
 
-LEAVES
+LEAVES AND LEAVE POLICIES:
 Annual Leave (vacation) : In Saudi Arabia (Article 109 of the Labor Law), the annual leave entitiement is
 dependent on the employee’s seniority as follows:
 « For employees with one to five years of service, the employee receives 21 days
@@ -112,7 +153,7 @@ if the employee has completed at least 2 consecutive years of service with
 the employer. However, this entitlement arises only if the employee has not
 performed Haj previously.
 
-TERMINATION
+TERMINATION :
 
 Termination Process: The termination process varies according to how the employment agreement
 and collective agreement are in place and is based on the type of contract and
@@ -146,7 +187,7 @@ contract in place. However, the probation period is typically 90 days and may
 be extended subject to the employee’s written consent but cannot exceed 180
 days.
 
-VISA (WORKING VISA)
+VISA (WORKING VISA):
 For an employee to acquire a work visa in Saudi Arabia, a third-party national
 must be sponsored by an employer. The employer must be registered with the
 Ministry of Interior and a file is opened with all the information on the employer’s

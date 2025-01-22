@@ -89,7 +89,7 @@ async def chat(state: State, request: Request):
         user_query = state.messages[-1].content.strip().lower()
         employee_id = "E001" 
 
-        if "apply for leave" in user_query or "leave application" in user_query or "apply leave" in user_query:
+        if "apply for leave" in user_query or "leave application" in user_query or "apply leave" in user_query or "apply for a leave" in user_query or ("apply" in user_query and "leave" in user_query):
             ai_message = {
                 "role": "assistant",
                 "content": f"To apply for leave, please click here to open the leave application. "
@@ -97,7 +97,7 @@ async def chat(state: State, request: Request):
             new_messages = state.messages + [ai_message]
             return {"messages": new_messages, "conversation_state": state.conversation_state}
         
-        if "submit reimbursement" in user_query or "reimbursement request" in user_query or "apply for reimbursement" in user_query or "request expense reimbursement" in user_query:
+        if "submit reimbursement" in user_query or "reimbursement request" in user_query or "apply for reimbursement" in user_query or "request expense reimbursement" in user_query or "submit a reimbursement" in user_query or "apply for a reimbursement" in user_query or("apply" in user_query and "reimbursement" in user_query) or ("submit" in user_query and "reimbursement" in user_query):
             ai_message = {
                 "role": "assistant",
                 "content": f"To submit a reimbursement request, please click here to open the reimbursement submission."
@@ -132,7 +132,7 @@ async def chat(state: State, request: Request):
         Instructions:
         1. Interpret the user's query using the employee data and policies provided.
         2. Perform any required calculations (e.g., overtime pay, leave balance) and provide only key results.
-        3. Respond with concise, to-the-point answers that are easy to understand.
+        3. If the query pertains to policies, provide a **detailed explanation** of the relevant policies, including all necessary context,     applications, and implications, formatted for clarity else respond with concise, to-the-point answers that are easy to understand.
         4. Use proper Markdown formatting (e.g., **bold**, _italics_, links, line breaks) in your response to improve readability.
         5. Share only the most relevant details for the query, avoiding unnecessary information or overly detailed explanations.
         6. If the employee asks for showing all the employee details , only show till the basic salary of the employee.
@@ -145,7 +145,7 @@ async def chat(state: State, request: Request):
 
         llm = ChatOpenAI(api_key=OPENAI_API_KEY, model="gpt-3.5-turbo", temperature=0.9)
         response_content = await llm.apredict(prompt)
-        print(response_content)
+        
 
         if not response_content.strip():
             ai_message = {
