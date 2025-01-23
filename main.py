@@ -128,10 +128,9 @@ async def chat(state: State, request: Request):
         conversation_history = "\n".join(
             [f"{msg.role.capitalize()}: {msg.content}" for msg in state.messages]
         )
-        print(conversation_history)
 
         prompt = f"""
-        You are a smart assistant with access to employee payroll data ,Saudi labor policies and prior conversation history.
+        You are a smart assistant with access to employee payroll data, Saudi labor policies, and prior conversation history.
 
         Conversation History:
         {conversation_history}
@@ -146,22 +145,33 @@ async def chat(state: State, request: Request):
         "{user_query}"
 
         **Updated Instructions**:  
-        1. **Conversation History First**: Start by checking the conversation history to determine if the query can be answered based on previous interactions. If relevant information is found, prioritize that and summarize it in the response.  
+        1. **Conversation History First**: Start by checking the conversation history to determine if the query can be answered based on previous interactions.  
+           - If relevant information is found, use it to craft a clear response without explicitly mentioning the conversation history unless absolutely necessary.  
+           - For casual or unrelated queries, respond directly without referencing conversation history.  
+
         2. **Fallback to User Data and Policies**: If the answer is not found in the conversation history, use the provided employee data and policies to interpret and address the query.  
+
         3. **Query-Specific Responses**:  
         - For **calculation-based queries** (e.g., overtime pay, leave balance), perform required calculations and provide clear results.  
         - For **policy-related queries**, provide a **detailed explanation** of the relevant policies, including context, applications, and implications, formatted for clarity.  
         - For **data-related queries**, share only up to the employee's basic salary unless otherwise specified.  
-        - For **apply leave related queries**, provide the user that by typing "apply leave" or anything related to it , he can start the process.
-        - For **apply reimbursement related queries**, provide the user that by typing "apply reimbursement" or anything related to it , he can start the process.
+        - For **apply leave-related queries**, guide the user to start the process by typing "apply leave" or related keywords.  
+        - For **apply reimbursement-related queries**, guide the user to start the process by typing "apply reimbursement" or related keywords.  
+
         4. Use proper **Markdown formatting** (e.g., **bold**, _italics_, links, line breaks) in your response to improve readability.  
+
         5. Share only the **most relevant details**, avoiding unnecessary information or excessive detail.  
+
         6. All currency-related calculations should be in **SAR (Saudi Riyal)**.  
+
         7. If the query is unrelated to employee payroll or Saudi labor policies, politely state that it is out of scope.  
+
         8. Avoid generating responses without appropriate Markdown formatting.
 
         **Answer Format**:
-        - Always ensure the response is **clear, well-structured, and relevant**.
+        - Ensure the response is **clear, concise, and well-structured**.  
+        - Only refer to conversation history if it is directly relevant to the user query.  
+        - Respond directly and crisply to the query     without unnecessary or redundant phrases.  
         """
 
         llm = ChatOpenAI(api_key=OPENAI_API_KEY, model="gpt-3.5-turbo", temperature=0.9)
