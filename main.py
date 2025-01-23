@@ -9,7 +9,6 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_milvus import Milvus
 from fastapi.middleware.cors import CORSMiddleware
 
-
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -83,11 +82,19 @@ def fetch_user_data(employee_id: str):
 @app.get("/")
 def read_root():
     return {"message": "Welcome to Payroll Backend"}
+
+memory_store={}
 @app.post("/chat/")
 async def chat(state: State, request: Request):
     try:
+        session_id = request.headers.get("session-id", "default-session")
+        if session_id not in memory_store:
+            memory_store[session_id] = {"messages": []}
+            
+        memory_store[session_id]["messages"].extend(state.messages)
         user_query = state.messages[-1].content.strip().lower()
         employee_id = "E001" 
+        user_data = fetch_user_data(employee_id)
 
         if "apply for leave" in user_query or "leave application" in user_query or "apply leave" in user_query or "apply for a leave" in user_query or ("apply" in user_query and "leave" in user_query):
             ai_message = {
@@ -105,7 +112,7 @@ async def chat(state: State, request: Request):
             new_messages = state.messages + [ai_message]
             return {"messages": new_messages, "conversation_state": state.conversation_state}
 
-        user_data = fetch_user_data(employee_id)
+       
 
         retrieved_docs = vector_store.similarity_search(user_query)
         if not retrieved_docs:
@@ -114,11 +121,20 @@ async def chat(state: State, request: Request):
                 "content": "<b>Sorry, I couldn't find any relevant information</b> related to your query. Please provide more details or contact HR for further assistance."
             }
             new_messages = state.messages + [ai_message]
+            memory_store[session_id]["messages"] = new_messages
             return {"messages": new_messages, "conversation_state": state.conversation_state}
         policy_context = "\n\n".join([doc.page_content for doc in retrieved_docs])
 
+        conversation_history = "\n".join(
+            [f"{msg.role.capitalize()}: {msg.content}" for msg in state.messages]
+        )
+        print(conversation_history)
+
         prompt = f"""
-        You are a smart assistant with access to employee payroll data and Saudi labor policies.
+        You are a smart assistant with access to employee payroll data ,Saudi labor policies and prior conversation history.
+
+        Conversation History:
+        {conversation_history}
 
         Employee Data:
         {user_data}
@@ -129,21 +145,28 @@ async def chat(state: State, request: Request):
         User Query:
         "{user_query}"
 
-        Instructions:
-        1. Interpret the user's query using the employee data and policies provided.
-        2. Perform any required calculations (e.g., overtime pay, leave balance) and provide only key results.
-        3. If the query pertains to policies, provide a **detailed explanation** of the relevant policies, including all necessary context,     applications, and implications, formatted for clarity else respond with concise, to-the-point answers that are easy to understand.
-        4. Use proper Markdown formatting (e.g., **bold**, _italics_, links, line breaks) in your response to improve readability.
-        5. Share only the most relevant details for the query, avoiding unnecessary information or overly detailed explanations.
-        6. If the employee asks for showing all the employee details , only show till the basic salary of the employee.
-        7. All currency-related calculations should be in SAR (Saudi Riyal).
-        8. If the query is unrelated, politely state that it is out of scope.
-        9. Do not return a response without Markdown formatting.
+        **Updated Instructions**:  
+        1. **Conversation History First**: Start by checking the conversation history to determine if the query can be answered based on previous interactions. If relevant information is found, prioritize that and summarize it in the response.  
+        2. **Fallback to User Data and Policies**: If the answer is not found in the conversation history, use the provided employee data and policies to interpret and address the query.  
+        3. **Query-Specific Responses**:  
+        - For **calculation-based queries** (e.g., overtime pay, leave balance), perform required calculations and provide clear results.  
+        - For **policy-related queries**, provide a **detailed explanation** of the relevant policies, including context, applications, and implications, formatted for clarity.  
+        - For **data-related queries**, share only up to the employee's basic salary unless otherwise specified.  
+        - For **apply leave related queries**, provide the user that by typing "apply leave" or anything related to it , he can start the process.
+        - For **apply reimbursement related queries**, provide the user that by typing "apply reimbursement" or anything related to it , he can start the process.
+        4. Use proper **Markdown formatting** (e.g., **bold**, _italics_, links, line breaks) in your response to improve readability.  
+        5. Share only the **most relevant details**, avoiding unnecessary information or excessive detail.  
+        6. All currency-related calculations should be in **SAR (Saudi Riyal)**.  
+        7. If the query is unrelated to employee payroll or Saudi labor policies, politely state that it is out of scope.  
+        8. Avoid generating responses without appropriate Markdown formatting.
 
-        Answer:
+        **Answer Format**:
+        - Always ensure the response is **clear, well-structured, and relevant**.
         """
 
         llm = ChatOpenAI(api_key=OPENAI_API_KEY, model="gpt-3.5-turbo", temperature=0.9)
+
+
         response_content = await llm.apredict(prompt)
         
 
@@ -155,14 +178,31 @@ async def chat(state: State, request: Request):
         else:
             ai_message = {"role": "assistant", "content": response_content}
 
-        ai_message = {"role": "assistant", "content": response_content}
-        new_messages = state.messages + [ai_message]
+        
+        new_messages = memory_store[session_id]["messages"] + [ai_message]
+        memory_store[session_id]["messages"] = new_messages
         return {"messages": new_messages, "conversation_state": state.conversation_state}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        error_message = {
+            "role": "assistant",
+            "content": f"<b>An error occurred:</b> {str(e)}"
+        }
+        new_messages = state.messages + [error_message]
+        return {"messages": new_messages, "conversation_state": state.conversation_state}
 
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
     uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
+
+
+
+
+
+
+   
+    
+
+
+  

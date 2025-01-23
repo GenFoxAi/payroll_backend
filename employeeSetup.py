@@ -27,14 +27,14 @@ def generate_dummy_data():
     
     basic_info = {
         "employeeId": employee_id,
-        "fullName": "John Doe",
+        "fullName": "Shanawaz Khan",
         "gender": "Male",
         "dateOfBirth": "1990-01-01",
-        "nationality": "American",
+        "nationality": "Saudi",
         "maritalStatus": "Single",
-        "email": "johndoe@example.com",
+        "email": "shanawazkhan@example.com",
         "phone": "1234567890",
-        "address": "123 Elm Street, Springfield"
+        "address": "234 King Abdulaziz Road, Al Olaya District, Riyadh 12241, Saudi Arabia"
     }
 
     employment_details = {
