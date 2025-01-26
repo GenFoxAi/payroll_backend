@@ -2,6 +2,7 @@ from pymongo import MongoClient
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import random
+import gridfs
 import os
 load_dotenv()
 
@@ -9,7 +10,7 @@ MONGO_URI = os.getenv("MONGO_URI")
 def get_database():
  
     client = MongoClient(MONGO_URI)
-    return client['employee_db']
+    return client['pdf_db'],gridfs.GridFS(client["pdf_db"])
 
 def create_employee_schema(db):
     db.create_collection("basic_info")
@@ -22,7 +23,7 @@ def create_employee_schema(db):
     db.create_collection("documents")
     db.create_collection("gosi")
 
-def generate_dummy_data():
+def generate_dummy_data(fs):
     employee_id = "E001"
     
     basic_info = {
@@ -140,21 +141,21 @@ def generate_dummy_data():
 
     documents = {
         "employeeId": employee_id,
-        "documents": [
-            {
-                "documentType": "Passport",
-                "documentNumber": "A1234567",
-                "expiryDate": "2030-12-31",
-                "filePath": "/docs/passport.pdf"
-            },
-            {
-                "documentType": "Contract",
-                "documentNumber": "C1234567",
-                "expiryDate": "",
-                "filePath": "/docs/contract.pdf"
-            }
-        ]
+        "documents": []
     }
+    critical_files = {
+        "Contract": "contract.pdf",
+        "OfferLetter": "ol.pdf",
+        "PerformanceReview": "pr.pdf",
+    }
+    for doc_type , file_path in critical_files.items():
+        with open(file_path,"rb")as file:
+            file_id = fs.put(file, filename=os.path.basename(file_path))
+            documents["documents"].append({
+                "documentType": doc_type,
+                "fileId": str(file_id),
+                "uploadedAt": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            })
 
     gosi_contributions = []
     for i in range(2):
@@ -188,10 +189,10 @@ def upload_dummy_data(db, dummy_data):
         db[collection].insert_one(data)
 
 if __name__ == "__main__":
-    db = get_database()
+    db,fs = get_database()
     print("Db done")
     create_employee_schema(db)
     print("schema done")
-    dummy_data = generate_dummy_data()
+    dummy_data = generate_dummy_data(fs)
     upload_dummy_data(db, dummy_data)
     print("Dummy data uploaded successfully.")
